@@ -52,7 +52,7 @@ if (@$_REQUEST["time"])
 
 
 function HiddenCheck($available, $val){
-    if (strpos($available, $val) == false)
+    if (strcmp($val, "none") != 0 && strpos($available, $val) == false)
     {
         echo "hidden";
     }
@@ -134,7 +134,7 @@ function DispErr($val){
 				<tr>
 					<td style="width: 169.091px;">
 						<select name="title" onchange="document.course.submit()" required>
-							<option value="none" <?php SelectValue("none") ?> >Select a course</option>
+							<option value="none" <?php HiddenCheck($availableCourses, "none"); ?> >Select a course</option>
 							<option <?php HiddenCheck($availableCourses, "creative"); ?> value="creative" >Creative Cupcakes</option>
 							<option <?php HiddenCheck($availableCourses, "digital"); ?> value="digital" >Digital Photography</option>
 							<option <?php HiddenCheck($availableCourses, "family"); ?> value="family" >Family History for Beginners</option>
@@ -144,7 +144,7 @@ function DispErr($val){
 					</td>
 					<td style="width: 110.909px;">
 						<select name="weekday" onchange="document.course.submit()" required>
-                            <option value="none" <?php SelectValue("none"); ?>>Select a day</option>
+                            <option value="none"<?php HiddenCheck($availableCourses, "none"); ?> >Select a day</option>
                             <option <?php HiddenCheck($availableCourses, "mon"); ?> value="mon"  >Monday</option>
                             <option <?php HiddenCheck($availableCourses, "tue"); ?> value="tue"  >Tuesday</option>
                             <option <?php HiddenCheck($availableCourses, "wed"); ?> value="wed"  >Wednesday</option>
@@ -152,7 +152,7 @@ function DispErr($val){
                             <option <?php HiddenCheck($availableCourses, "fri"); ?> value="fri"  >Friday</option>
 						</select>
 						<select name="time" onchange="document.course.submit()" required>
-                            <option value="none" <?php SelectValue("none"); ?>>Select a timeslot</option>
+                            <option value="none"<?php HiddenCheck($availableCourses, "none"); ?> >Select a timeslot</option>
                             <option <?php HiddenCheck($availableCourses, "1900"); ?> value="1900"  >19:00</option>
                             <option <?php HiddenCheck($availableCourses, "2000"); ?> value="2000"  >20:00</option>
 						</select>
