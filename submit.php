@@ -1,6 +1,5 @@
 <?php
 require "DataBase.php";
-session_start();
 
 // User Info
 $userName	= "";
@@ -8,25 +7,25 @@ $userPhone	= "";
 $userPre	= "";
 
 // Course Info
-$courseTitle = $_SESSION["title"];
-$courseWeekday = $_SESSION["weekday"];
-$courseTime = $_SESSION["time"];
+$courseTitle = $_COOKIE["title"];
+$courseWeekday = $_COOKIE["weekday"];
+$courseTime = $_COOKIE["time"];
 
 // User info
-$_SESSION["name"] = $_POST["name"];
-$_SESSION["phone"] = $_POST["phone"];
-$_SESSION["pre"] = $_POST["pre"];
+setcookie("name", $_POST["name"], time() + 3600);
+setcookie("phone", $_POST["phone"], time() + 3600);
+setcookie("pre", $_POST["pre"], time() + 3600);
 
 // Session Data for Error Report
-$_SESSION["nameErr"] = false;
-$_SESSION["phoneErr"] = false;
-$_SESSION["titleErr"] = false;
-$_SESSION["weekdayTimeErr"] = false;
+setcookie("nameErr", false, time() + 3600);
+setcookie("phoneErr", false, time() + 3600);
+setcookie("titleErr", false, time() + 3600);
+setcookie("weekdayTimeErr", false, time() + 3600);
 
 if (strcmp($courseTitle, "none") == 0 || strcmp($courseTime, "none") == 0 || strcmp($courseWeekday, "none") == 0)
 {
-    $_SESSION["titleErr"] = (strcmp($courseTitle, "none") == 0);
-    $_SESSION["weekdayTimeErr"] = (strcmp($courseWeekday, "none") == 0) || (strcmp($courseTime, "none") == 0);
+    $_COOKIE["titleErr"] = (strcmp($courseTitle, "none") == 0);
+    $_COOKIE["weekdayTimeErr"] = (strcmp($courseWeekday, "none") == 0) || (strcmp($courseTime, "none") == 0);
 	header("Location: classes.php");
     exit();
 }
@@ -41,7 +40,7 @@ if ($name != "" && preg_match("/^[a-zA-Z ]*[\-']{0,1}[a-zA-Z ]*[\-']{0,1}[a-zA-Z
 }
 else
 {
-	$_SESSION["nameErr"] = true;
+    setcookie("nameErr", true, time() + 3600);
 	header("Location: classes.php");
     exit();
 }
@@ -55,7 +54,7 @@ if( preg_match("/^0[0-9]{8,9}$/", $phone)) {
 }
 else
 {
-	$_SESSION["phoneErr"] = true;
+    setcookie("phoneErr", true, time() + 3600);
 	header("Location: classes.php");
     exit();
 }
@@ -92,18 +91,17 @@ if ($hr == 2) // No places left
 
 $dbInstance->End();
 
-// Reset all sessions
-$_SESSION["title"] = "";
-$_SESSION["weekday"] = "";
-$_SESSION["time"] = "";
-$_SESSION["name"] = "";
-$_SESSION["phone"] = "";
-$_SESSION["pre"] = "";
+// Reset all cookies
+setcookie("title", "", time() - 3600);
+setcookie("weekday", "", time() - 3600);
+setcookie("time", "", time() - 3600);
+setcookie("phone", "", time() - 3600);
+setcookie("pre", "", time() - 3600);
 
-$_SESSION["nameErr"] = false;
-$_SESSION["phoneErr"] = false;
-$_SESSION["titleErr"] = false;
-$_SESSION["weekdayTimeErr"] = false;
+setcookie("nameErr", "", time() - 3600);
+setcookie("phoneErr", "", time() - 3600);
+setcookie("titleErr", "", time() - 3600);
+setcookie("weekdayTimeErr", "", time() - 3600);
 
 echo "Register Successfully! <br/> Will jump back in 3 seconds";
 header( "Refresh:3; url=classes.php", true, 303);

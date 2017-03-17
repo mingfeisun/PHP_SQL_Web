@@ -1,3 +1,106 @@
+<?php
+require "DataBase.php";
+
+$dbInstance = new DataBase();
+
+if (!$dbInstance->Init())
+{
+    die("Init DB Error!");
+}
+
+if (!$dbInstance->CreateDatabase())
+{
+    die("Create DB Error!");
+}
+
+$availableCourses = $dbInstance->GetAvailabelCourses();
+
+$dbInstance->End();
+
+if (strcmp($availableCourses, "no data") == 0)
+{
+    die("No courses are available right now");
+}
+
+if (@$_REQUEST["title"])
+{
+    setcookie("title", $_REQUEST["title"], time()+3600);
+}
+if (@$_REQUEST["weekday"])
+{
+    if (strpos($availableCourses, $_REQUEST["weekday"]) == false)
+    {
+        setcookie("weekday", "none", time() + 3600);
+    }
+    else
+    {
+        setcookie("weekday", $_REQUEST["weekday"], time() + 3600);
+    }
+}
+if (@$_REQUEST["time"])
+{
+    setcookie("time", $_REQUEST["time"], time() + 3600);
+    if (strpos($availableCourses, $_REQUEST["time"]) == false)
+    {
+        setcookie("time","none", time() + 3600 );
+    }
+    else
+    {
+        setcookie("time", $_REQUEST["time"], time() + 3600);
+    }
+}
+
+
+function HiddenCheck($available, $val){
+    if (strpos($available, $val) == false)
+    {
+        echo "hidden";
+    }
+}
+
+function DispErr($val){
+    if (strcmp($val, "name") == 0)
+    {
+        if(@$_COOKIE["nameErr"]){
+            echo "a-z, A-Z, -, ' and space";
+        }
+    } else
+    if (strcmp($val, "phone") == 0)
+    {
+        if(@$_COOKIE["phoneErr"]){
+            echo "9-10 digits starting with 0";
+        }
+    } else
+    if (strcmp($val, "title") == 0)
+    {
+        if(@$_COOKIE["titleErr"]){
+            echo "Please select a course";
+        }
+    } else
+    if (strcmp($val, "weekdayTime") == 0)
+    {
+        if(@$_COOKIE["weekdayTimeErr"] ){
+            echo "Please select a day/timeslot";
+        }
+    } 
+}
+
+function SelectValue($val){
+    if(strcmp(@$_COOKIE["title"], $val) == 0){
+        echo "selected";
+        return;
+    } 
+    if(strcmp(@$_COOKIE["weekday"], $val) == 0){
+        echo "selected";
+        return;
+    } 
+    if(strcmp(@$_COOKIE["time"], $val) == 0){
+        echo "selected";
+        return;
+    }
+}
+
+?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -9,110 +112,6 @@
     </style>
 </head>
 <body>
-	<?php
-	session_start();
-	require "DataBase.php";
-
-	$dbInstance = new DataBase();
-
-	if (!$dbInstance->Init())
-	{
-		die("Init DB Error!");
-	}
-
-	if (!$dbInstance->CreateDatabase())
-	{
-		die("Create DB Error!");
-	}
-
-	$availableCourses = $dbInstance->GetAvailabelCourses();
-    
-	$dbInstance->End();
-
-    if (strcmp($availableCourses, "no data") == 0)
-    {
-        die("No courses are available right now");
-    }
-
-    if (@$_REQUEST["title"])
-    {
-        $_SESSION["title"] = $_REQUEST["title"];
-    }
-    if (@$_REQUEST["weekday"])
-    {
-        if (strpos($availableCourses, $_REQUEST["weekday"]) == false)
-        {
-            $_SESSION["weekday"] = "none";
-        }
-        else
-        {
-            $_SESSION["weekday"] = $_REQUEST["weekday"];
-        }
-    }
-    if (@$_REQUEST["time"])
-    {
-        $_SESSION["time"] = $_REQUEST["time"];
-        if (strpos($availableCourses, $_REQUEST["time"]) == false)
-        {
-            $_SESSION["time"] = "none";
-        }
-        else
-        {
-            $_SESSION["time"] = $_REQUEST["time"];
-        }
-    }
-    
-
-    function HiddenCheck($available, $val){
-        if (strpos($available, $val) == false)
-        {
-            echo "hidden";
-        }
-    }
-
-	function DispErr($val){
-		if (strcmp($val, "name") == 0)
-		{
-			if(@$_SESSION["nameErr"]){
-				echo "a-z, A-Z, -, ' and space";
-			}
-		} else
-		if (strcmp($val, "phone") == 0)
-		{
-			if(@$_SESSION["phoneErr"]){
-				echo "9-10 digits starting with 0";
-			}
-		} else
-		if (strcmp($val, "title") == 0)
-		{
-			if(@$_SESSION["titleErr"]){
-				echo "Please select a course";
-			}
-		} else
-		if (strcmp($val, "weekdayTime") == 0)
-		{
-			if(@$_SESSION["weekdayTimeErr"] ){
-				echo "Please select a day/timeslot";
-			}
-		} 
-	}
-
-	function SelectValue($val){
-		if(strcmp(@$_SESSION["title"], $val) == 0){
-			echo "selected";
-            return;
-		} 
-		if(strcmp(@$_SESSION["weekday"], $val) == 0){
-			echo "selected";
-            return;
-		} 
-		if(strcmp(@$_SESSION["time"], $val) == 0){
-			echo "selected";
-            return;
-		}
-	}
-
-	?>
 	<h2 style="text-align: center;">
 		<strong>Online Course Booking</strong>
 	</h2>
@@ -171,21 +170,21 @@
 				<tr>
 					<td style="width: 169.091px;">Name:</td>
 					<td style="width: 110.909px; text-align: left;">
-						<input required type="text" name="name" value="<?php echo @$_SESSION["name"]; ?>" /><span class="error">*</span><br />
+						<input required type="text" name="name" value="<?php echo @$_COOKIE["name"]; ?>" /><span class="error">*</span><br />
 						<span class="error"><?php DispErr("name");?></span>
 					</td>
 				</tr>
 				<tr>
 					<td style="width: 169.091px;">Phone/mobile No.:</td>
 					<td style="width: 110.909px;">
-						<input required type="tel" name="phone" value="<?php echo @$_SESSION["phone"]; ?>" /><span class="error">*</span><br />
+						<input required type="tel" name="phone" value="<?php echo @$_COOKIE["phone"]; ?>" /><span class="error">*</span><br />
 						<span class="error"><?php DispErr("phone");?></span>
 					</td>
 				</tr>
 				<tr>
 					<td style="width: 169.091px;">Previous knowledge:</td>
 					<td style="width: 110.909px;"><textarea name="pre" rows="10" cols="30" >
-						<?php echo @$_SESSION["pre"]; ?>
+						<?php echo @$_COOKIE["pre"]; ?>
 					</textarea></td>
 				</tr>
 				<tr>

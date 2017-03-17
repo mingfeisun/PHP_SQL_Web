@@ -1,13 +1,14 @@
 <?php
 class DataBase
 {
-	var $m_ServerName = "localhost";
-	var $m_UserName = "root";
-	var $m_UserPassword = ""; // Without Passwords
+	var $m_ServerName = "mysql";
+	var $m_Database = "x4yx";
+	var $m_UserName = "x4yx";
+	var $m_UserPassword = "12345678";
 	var $m_DBCon = null;
 
 	function Init(){
-		$this->m_DBCon = new mysqli($this->m_ServerName, $this->m_UserName, $this->m_UserPassword);
+		$this->m_DBCon = new mysqli($this->m_ServerName, $this->m_UserName, $this->m_UserPassword, $this->m_Database);
 		if ($this->m_DBCon->connect_error)
 		{
 			return false;
@@ -24,7 +25,7 @@ class DataBase
 
 	function CreateDatabase(){
 		// Check Whether the DB has been created already
-		if (mysqli_query($this->m_DBCon, "USE test"))
+		if (mysqli_query($this->m_DBCon, "USE x4yx"))
 		{
 			$queryResult = mysqli_query($this->m_DBCon, "SELECT * FROM course");
 			if ($queryResult != false && mysqli_num_rows($queryResult) > 0)
@@ -36,20 +37,21 @@ class DataBase
 				return false;
 			}
 		}
+        
 
 		// Create DB test
-		$sql = "CREATE DATABASE test";
-		if (!mysqli_query($this->m_DBCon, $sql))
-		{
-			return false;
-		}
+        //$sql = "CREATE DATABASE test";
+        //if (!mysqli_query($this->m_DBCon, $sql))
+        //{
+        //    return false;
+        //}
 
 		// Use DB test
-		$sql = "USE test";
-		if (!mysqli_query($this->m_DBCon, $sql))
-		{
-			return false;
-		}
+        //$sql = "USE x4yx";
+        //if (!mysqli_query($this->m_DBCon, $sql))
+        //{
+        //    return false;
+        //}
 
 		// Create Table course
 		$sql = "CREATE TABLE course (
