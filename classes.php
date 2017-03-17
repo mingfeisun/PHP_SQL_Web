@@ -134,18 +134,19 @@ function DispErr($val){
 	<h2 style="text-align: center;">
 		<strong>Online Course Booking</strong>
 	</h2>
+	<div align="center">
 	<form name="course" action="<?php echo $_SERVER['PHP_SELF'];?>" method="post">
-		<table >
+		<table border="1">
 			<tbody>
 				<tr>
 					<td style="width: 300px; text-align: left;">Course Title</td>
-					<td style="width: 500px;">Course Time</td>
+					<td style="width: 300px;">Course Time</td>
 				</tr>
 				<tr>
 					<td style="width: 300px; text-align: left;">
 						<span class="error"><?php DispErr("title");?></span>
                     </td>
-					<td style="width: 500px;">
+					<td style="width: 300px;">
 						<span class="error"><?php DispErr("weekdayTime");?></span>
                     </td>
 				</tr>
@@ -180,11 +181,11 @@ function DispErr($val){
 		</table>
 	</form><br /><br />
 	<form name="info" action="submit.php" method="post">
-		<table>
+		<table border="1">
 			<tbody>
 				<tr>
-					<td style="width: 300px; text-align: left;">Input your information:</td>
-					<td><p><span class="error">* required field.</span></p> </td>
+					<td style="width: 200px; text-align: left;">Input your information:</td>
+					<td style="width: 200px; text-align: left;"><p><span class="error">* required field.</span></p> </td>
 				</tr>
 				<tr>
 					<td style="width: 169.091px;">Name:</td>
@@ -213,5 +214,6 @@ function DispErr($val){
 			</tbody>
 		</table>
 	</form>
+	</div>
 </body>
 </html>
