@@ -24,11 +24,18 @@ if (strcmp($availableCourses, "no data") == 0)
 
 if (@$_REQUEST["title"])
 {
-    setcookie("title", $_REQUEST["title"], time() + 3600);
+    $GLOBALS["title"] = $_REQUEST["title"];
+    setcookie("title", $_REQUEST["title"], time() + 3600); // save the value in cookies
 }
+else
+{
+    $GLOBALS["title"] = @$_COOKIE["title"]; // load value from cookies
+}
+
 if (@$_REQUEST["weekday"])
 {
-    if (strpos($availableCourses, $_REQUEST["weekday"]) == false)
+    $GLOBALS["weekday"] = $_REQUEST["weekday"];
+    if (strpos($availableCourses, $_REQUEST["weekday"]) == false) // save the value in cookies
     {
         setcookie("weekday", "none", time() + 3600);
     }
@@ -37,9 +44,15 @@ if (@$_REQUEST["weekday"])
         setcookie("weekday", $_REQUEST["weekday"], time() + 3600);
     }
 }
+else
+{
+	$GLOBALS["weekday"] = @$_COOKIE["weekday"]; // load value from cookies
+}
+
 if (@$_REQUEST["time"])
 {
-    setcookie("time", $_REQUEST["time"], time() + 3600);
+    $GLOBALS["time"] = $_REQUEST["time"]; 
+    setcookie("time", $_REQUEST["time"], time() + 3600); // save the value in cookies
     if (strpos($availableCourses, $_REQUEST["time"]) == false)
     {
         setcookie("time", "none", time() + 3600 );
@@ -49,6 +62,11 @@ if (@$_REQUEST["time"])
         setcookie("time", $_REQUEST["time"], time() + 3600);
     }
 }
+else
+{
+	$GLOBALS["time"] = @$_COOKIE["time"]; // load value from cookies
+}
+
 
 
 function HiddenCheck($available, $val){
@@ -58,15 +76,15 @@ function HiddenCheck($available, $val){
     }
     else
     {
-        if(strcmp(@$_REQUEST["title"], $val) == 0){
+        if(strcmp(@$GLOBALS["title"], $val) == 0){
             echo "selected";
             return;
         } 
-        if(strcmp(@$_REQUEST["weekday"], $val) == 0){
+        if(strcmp(@$GLOBALS["weekday"], $val) == 0){
             echo "selected";
             return;
         } 
-        if(strcmp(@$_REQUEST["time"], $val) == 0){
+        if(strcmp(@$GLOBALS["time"], $val) == 0){
             echo "selected";
             return;
         }
