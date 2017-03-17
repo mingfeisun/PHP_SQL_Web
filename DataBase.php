@@ -32,10 +32,6 @@ class DataBase
 			{
 				return true;
 			}
-			else
-			{
-				return false;
-			}
 		}
         
 

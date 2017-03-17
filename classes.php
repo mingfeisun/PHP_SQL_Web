@@ -24,7 +24,7 @@ if (strcmp($availableCourses, "no data") == 0)
 
 if (@$_REQUEST["title"])
 {
-    setcookie("title", $_REQUEST["title"], time()+3600);
+    setcookie("title", $_REQUEST["title"], time() + 3600);
 }
 if (@$_REQUEST["weekday"])
 {
@@ -42,7 +42,7 @@ if (@$_REQUEST["time"])
     setcookie("time", $_REQUEST["time"], time() + 3600);
     if (strpos($availableCourses, $_REQUEST["time"]) == false)
     {
-        setcookie("time","none", time() + 3600 );
+        setcookie("time", "none", time() + 3600 );
     }
     else
     {
@@ -56,6 +56,22 @@ function HiddenCheck($available, $val){
     {
         echo "hidden";
     }
+    else
+    {
+        if(strcmp(@$_REQUEST["title"], $val) == 0){
+            echo "selected";
+            return;
+        } 
+        if(strcmp(@$_REQUEST["weekday"], $val) == 0){
+            echo "selected";
+            return;
+        } 
+        if(strcmp(@$_REQUEST["time"], $val) == 0){
+            echo "selected";
+            return;
+        }
+    }
+    
 }
 
 function DispErr($val){
@@ -83,21 +99,6 @@ function DispErr($val){
             echo "Please select a day/timeslot";
         }
     } 
-}
-
-function SelectValue($val){
-    if(strcmp(@$_COOKIE["title"], $val) == 0){
-        echo "selected";
-        return;
-    } 
-    if(strcmp(@$_COOKIE["weekday"], $val) == 0){
-        echo "selected";
-        return;
-    } 
-    if(strcmp(@$_COOKIE["time"], $val) == 0){
-        echo "selected";
-        return;
-    }
 }
 
 ?>
@@ -134,26 +135,26 @@ function SelectValue($val){
 					<td style="width: 169.091px;">
 						<select name="title" onchange="document.course.submit()" required>
 							<option value="none" <?php SelectValue("none") ?> >Select a course</option>
-							<option <?php HiddenCheck($availableCourses, "creative"); ?> value="creative" <?php SelectValue("creative") ?>>Creative Cupcakes</option>
-							<option <?php HiddenCheck($availableCourses, "digital"); ?> value="digital" <?php SelectValue("digital") ?>>Digital Photography</option>
-							<option <?php HiddenCheck($availableCourses, "family"); ?> value="family" <?php SelectValue("family") ?>>Family History for Beginners</option>
-							<option <?php HiddenCheck($availableCourses, "fundamentals"); ?> value="fundamentals" <?php SelectValue("fundamentals") ?>>Fundamentals of Acrylic Painting</option>
-							<option <?php HiddenCheck($availableCourses, "holiday"); ?> value="holiday" <?php SelectValue("holiday") ?>>Holiday French</option>
+							<option <?php HiddenCheck($availableCourses, "creative"); ?> value="creative" >Creative Cupcakes</option>
+							<option <?php HiddenCheck($availableCourses, "digital"); ?> value="digital" >Digital Photography</option>
+							<option <?php HiddenCheck($availableCourses, "family"); ?> value="family" >Family History for Beginners</option>
+							<option <?php HiddenCheck($availableCourses, "fundamentals"); ?> value="fundamentals" >Fundamentals of Acrylic Painting</option>
+							<option <?php HiddenCheck($availableCourses, "holiday"); ?> value="holiday" >Holiday French</option>
 						</select>
 					</td>
 					<td style="width: 110.909px;">
 						<select name="weekday" onchange="document.course.submit()" required>
                             <option value="none" <?php SelectValue("none"); ?>>Select a day</option>
-                            <option <?php HiddenCheck($availableCourses, "mon"); ?> value="mon" <?php SelectValue("mon"); ?> >Monday</option>
-                            <option <?php HiddenCheck($availableCourses, "tue"); ?> value="tue" <?php SelectValue("tue"); ?> >Tuesday</option>
-                            <option <?php HiddenCheck($availableCourses, "wed"); ?> value="wed" <?php SelectValue("wed"); ?> >Wednesday</option>
-                            <option <?php HiddenCheck($availableCourses, "thu"); ?> value="thu" <?php SelectValue("thu"); ?> >Thursday</option>
-                            <option <?php HiddenCheck($availableCourses, "fri"); ?> value="fri" <?php SelectValue("fri"); ?> >Friday</option>
+                            <option <?php HiddenCheck($availableCourses, "mon"); ?> value="mon"  >Monday</option>
+                            <option <?php HiddenCheck($availableCourses, "tue"); ?> value="tue"  >Tuesday</option>
+                            <option <?php HiddenCheck($availableCourses, "wed"); ?> value="wed"  >Wednesday</option>
+                            <option <?php HiddenCheck($availableCourses, "thu"); ?> value="thu"  >Thursday</option>
+                            <option <?php HiddenCheck($availableCourses, "fri"); ?> value="fri"  >Friday</option>
 						</select>
 						<select name="time" onchange="document.course.submit()" required>
                             <option value="none" <?php SelectValue("none"); ?>>Select a timeslot</option>
-                            <option <?php HiddenCheck($availableCourses, "1900"); ?> value="1900" <?php SelectValue("1900"); ?> >19:00</option>
-                            <option <?php HiddenCheck($availableCourses, "2000"); ?> value="2000" <?php SelectValue("2000"); ?> >20:00</option>
+                            <option <?php HiddenCheck($availableCourses, "1900"); ?> value="1900"  >19:00</option>
+                            <option <?php HiddenCheck($availableCourses, "2000"); ?> value="2000"  >20:00</option>
 						</select>
 					</td>
 				</tr>
