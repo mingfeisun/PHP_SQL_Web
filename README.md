@@ -1,5 +1,9 @@
 # PHP_SQL_Web
-PHP mysql based website for a small assignment project: a booking system, sql operations, php rendering.
+PHP mysql based website for a small assignment project: a booking system, sql operations, php etc.
+
+The snapshot of this web can be found below:
+![Alt text](website.png "PHP-based Booking System")
+
 
 # File Descriptions
 * *classes.php*: 
